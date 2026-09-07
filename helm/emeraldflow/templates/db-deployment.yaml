@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emeraldflow-db
+  labels:
+    app: emeraldflow-db
+spec:
+  replicas: {{ .Values.db.replicas }}
+  selector:
+    matchLabels:
+      app: emeraldflow-db
+  template:
+    metadata:
+      labels:
+        app: emeraldflow-db
+    spec:
+      {{- if .Values.dockerregistry.enabled }}
+      imagePullSecrets:
+        - name: emeraldflow-registry-secret
+      {{- end }}
+      initContainers:
+        - name: rm-lost-found
+          image: "{{ .Values.initcontainers.image }}:{{ .Values.initcontainers.tag }}"
+          command: ["sh", "-c", "rm -rf /var/lib/mysql/lost+found"]
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/mysql
+      containers:
+        - name: emeraldflow-db
+          image: "{{ .Values.db.image }}:{{ .Values.db.tag }}"
+          ports:
+            - name: db-port
+              containerPort: {{ .Values.db.containerPort }}
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: emeraldflow-secret
+                  key: db-pass
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: emeraldflow-db-pvc

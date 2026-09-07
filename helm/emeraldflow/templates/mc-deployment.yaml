@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emeraldflow-mc
+  labels:
+    app: emeraldflow-mc
+spec:
+  replicas: {{ .Values.memcached.replicas }}
+  selector:
+    matchLabels:
+      app: emeraldflow-mc
+  template:
+    metadata:
+      labels:
+        app: emeraldflow-mc
+    spec:
+      containers:
+        - name: emeraldflow-mc
+          image: "{{ .Values.memcached.image }}:{{ .Values.memcached.tag }}"
+          ports:
+            - name: mc-port
+              containerPort: {{ .Values.memcached.containerPort }}

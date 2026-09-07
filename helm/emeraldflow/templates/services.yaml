@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: emeraldflow-app-service
+  labels:
+    app: emeraldflow-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.app.servicePort }}
+      targetPort: {{ .Values.app.containerPort }}
+      protocol: TCP
+  selector:
+    app: emeraldflow-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emeraldflow-db
+  labels:
+    app: emeraldflow-db
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.db.servicePort }}
+      targetPort: {{ .Values.db.containerPort }}
+      protocol: TCP
+  selector:
+    app: emeraldflow-db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emeraldflow-mc
+  labels:
+    app: emeraldflow-mc
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.memcached.servicePort }}
+      targetPort: {{ .Values.memcached.containerPort }}
+      protocol: TCP
+  selector:
+    app: emeraldflow-mc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: emeraldflow-rmq
+  labels:
+    app: emeraldflow-rmq
+spec:
+  type: ClusterIP
+  ports:
+    - port: {{ .Values.rabbitmq.servicePort }}
+      targetPort: {{ .Values.rabbitmq.containerPort }}
+      protocol: TCP
+  selector:
+    app: emeraldflow-rmq

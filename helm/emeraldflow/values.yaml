@@ -1,0 +1,50 @@
+app:
+  image: emeraldflow-app
+  tag: latest
+  replicas: 1
+  containerPort: 8080
+  servicePort: 8080
+
+db:
+  image: emeraldflow-db
+  tag: latest
+  replicas: 1
+  containerPort: 3306
+  servicePort: 3306
+  storageClass: gp2
+  storageSize: 3Gi
+
+memcached:
+  image: memcached
+  tag: latest
+  replicas: 1
+  containerPort: 11211
+  servicePort: 11211
+
+rabbitmq:
+  image: rabbitmq
+  tag: latest
+  replicas: 1
+  containerPort: 5672
+  servicePort: 5672
+  defaultUser: guest
+
+initcontainers:
+  image: busybox
+  tag: latest
+
+ingress:
+  enabled: true
+  host: emeraldflow.raphonkzy.my.id
+  servicePort: 8080
+
+secrets:
+  dbPassword: halstewart13
+  rmqPassword: guest
+
+dockerregistry:
+  enabled: false
+  server: https://index.docker.io/v1/
+  username: ""
+  password: ""
+  email: ""

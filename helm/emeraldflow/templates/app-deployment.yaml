@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emeraldflow-app
+  labels:
+    app: emeraldflow-app
+spec:
+  replicas: {{ .Values.app.replicas }}
+  selector:
+    matchLabels:
+      app: emeraldflow-app
+  template:
+    metadata:
+      labels:
+        app: emeraldflow-app
+    spec:
+      {{- if .Values.dockerregistry.enabled }}
+      imagePullSecrets:
+        - name: emeraldflow-registry-secret
+      {{- end }}
+      initContainers:
+        - name: init-db
+          image: "{{ .Values.initcontainers.image }}:{{ .Values.initcontainers.tag }}"
+          command: ["sh", "-c", "until nslookup emeraldflow-db.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for db; sleep 2; done;"]
+        - name: init-memcache
+          image: "{{ .Values.initcontainers.image }}:{{ .Values.initcontainers.tag }}"
+          command: ["sh", "-c", "until nslookup emeraldflow-mc.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for memcache; sleep 2; done;"]
+      containers:
+        - name: emeraldflow-app
+          image: "{{ .Values.app.image }}:{{ .Values.app.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - name: app-port
+              containerPort: {{ .Values.app.containerPort }}
