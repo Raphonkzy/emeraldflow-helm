@@ -245,8 +245,8 @@ All configurable parameters reside in [`helm/emeraldflow/values.yaml`](./helm/em
 #### Application Service (`app`)
 | Parameter | Default | Description |
 |:---|:---|:---|
-| `app.image` | `170202974463.dkr.ecr.us-east-1.amazonaws.com/emeraldflow-app` | ECR repository containing the application container image |
-| `app.tag` | `05338da05f32f070e8577b2ea723701abd2b20c3` | Image tag (immutable Git SHA updated automatically by CI) |
+| `app.image` | `<AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/emeraldflow-app` | ECR repository containing the application container image |
+| `app.tag` | `latest` | Image tag (immutable Git SHA updated automatically by CI) |
 | `app.replicas` | `1` | Pod replica count |
 | `app.containerPort` | `8080` | Internal application listening port |
 | `app.servicePort` | `8080` | ClusterIP Service exposed port |
@@ -292,9 +292,9 @@ All configurable parameters reside in [`helm/emeraldflow/values.yaml`](./helm/em
 | Parameter | Default | Description |
 |:---|:---|:---|
 | `ingress.enabled` | `true` | Enables/disables creation of the Ingress resource |
-| `ingress.host` | `emeraldflow.raphonkzy.my.id` | FQDN routed to the AWS Application Load Balancer |
+| `ingress.host` | `emeraldflow.yourdomain.com` | FQDN routed to the AWS Application Load Balancer |
 | `ingress.servicePort` | `8080` | Backend target Service port |
-| `ingress.certificateArn` | `arn:aws:acm:us-east-1:...` | AWS ACM Certificate ARN for HTTPS termination |
+| `ingress.certificateArn` | `arn:aws:acm:us-east-1:123456789012:certificate/...` | AWS ACM Certificate ARN for HTTPS termination |
 
 *The Ingress template provisions an AWS ALB with automated HTTP-to-HTTPS redirect (`ssl-redirect: '443'`) and `target-type: ip`.*
 
@@ -445,7 +445,7 @@ Once the AWS Load Balancer Controller provisions the ALB, retrieve the Ingress a
 kubectl get ingress emeraldflow-ingress -n emeraldflow
 ```
 
-Point your DNS record (Route 53) to the provisioned ALB DNS name, and access the application at `https://emeraldflow.raphonkzy.my.id`.
+Point your DNS record (Route 53) to the provisioned ALB DNS name, and access the application at `https://emeraldflow.yourdomain.com`.
 
 ---
 

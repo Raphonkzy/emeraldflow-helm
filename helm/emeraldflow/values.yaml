@@ -1,6 +1,6 @@
 app:
-  image: 170202974463.dkr.ecr.us-east-1.amazonaws.com/emeraldflow-app
-  tag: 05338da05f32f070e8577b2ea723701abd2b20c3
+  image: <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/emeraldflow-app
+  tag: latest
   replicas: 1
   containerPort: 8080
   servicePort: 8080
@@ -30,15 +30,16 @@ initcontainers:
   tag: latest
 ingress:
   enabled: true
-  host: emeraldflow.raphonkzy.my.id
+  host: emeraldflow.yourdomain.com
   servicePort: 8080
-  certificateArn: "arn:aws:acm:us-east-1:170202974463:certificate/00c471fb-8b6c-42a3-b53f-633c7d16c098"
+  certificateArn: "arn:aws:acm:us-east-1:123456789012:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 secrets:
-  dbPassword: emeraldpass
-  rmqPassword: guest
+  dbPassword: changeme
+  rmqPassword: changeme
 dockerregistry:
   enabled: false
   server: https://index.docker.io/v1/
   username: ""
   password: ""
   email: ""
+
