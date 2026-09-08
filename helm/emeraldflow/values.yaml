@@ -1,0 +1,44 @@
+app:
+  image: 170202974463.dkr.ecr.us-east-1.amazonaws.com/emeraldflow-app
+  tag: 05338da05f32f070e8577b2ea723701abd2b20c3
+  replicas: 1
+  containerPort: 8080
+  servicePort: 8080
+db:
+  image: emeraldflow-db
+  tag: latest
+  replicas: 1
+  containerPort: 3306
+  servicePort: 3306
+  storageClass: gp2
+  storageSize: 3Gi
+memcached:
+  image: memcached
+  tag: latest
+  replicas: 1
+  containerPort: 11211
+  servicePort: 11211
+rabbitmq:
+  image: rabbitmq
+  tag: latest
+  replicas: 1
+  containerPort: 5672
+  servicePort: 5672
+  defaultUser: guest
+initcontainers:
+  image: busybox
+  tag: latest
+ingress:
+  enabled: true
+  host: emeraldflow.raphonkzy.my.id
+  servicePort: 8080
+  certificateArn: "arn:aws:acm:us-east-1:170202974463:certificate/00c471fb-8b6c-42a3-b53f-633c7d16c098"
+secrets:
+  dbPassword: emeraldpass
+  rmqPassword: guest
+dockerregistry:
+  enabled: false
+  server: https://index.docker.io/v1/
+  username: ""
+  password: ""
+  email: ""

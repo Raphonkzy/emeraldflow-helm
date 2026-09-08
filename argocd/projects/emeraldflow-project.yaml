@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: emeraldflow
+  namespace: argocd
+spec:
+  description: emeraldflow application project
+  sourceRepos:
+    - git@github.com:Raphonkzy/emeraldflow-helm.git
+  destinations:
+    - namespace: emeraldflow
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

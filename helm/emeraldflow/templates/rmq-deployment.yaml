@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emeraldflow-rmq
+  labels:
+    app: emeraldflow-rmq
+spec:
+  replicas: {{ .Values.rabbitmq.replicas }}
+  selector:
+    matchLabels:
+      app: emeraldflow-rmq
+  template:
+    metadata:
+      labels:
+        app: emeraldflow-rmq
+    spec:
+      containers:
+        - name: emeraldflow-rmq
+          image: "{{ .Values.rabbitmq.image }}:{{ .Values.rabbitmq.tag }}"
+          ports:
+            - name: rmq-port
+              containerPort: {{ .Values.rabbitmq.containerPort }}
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: {{ .Values.rabbitmq.defaultUser | quote }}
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: emeraldflow-secret
+                  key: rmq-pass
