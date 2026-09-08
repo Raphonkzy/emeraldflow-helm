@@ -1,12 +1,12 @@
 app:
   image: <AWS_ACCOUNT_ID>.dkr.ecr.us-east-1.amazonaws.com/emeraldflow-app
-  tag: latest
+  tag: "49b5e263626f092b93ffca046e7df0129da681ab"
   replicas: 1
   containerPort: 8080
   servicePort: 8080
 db:
   image: emeraldflow-db
-  tag: latest
+  tag: "49b5e263626f092b93ffca046e7df0129da681ab"
   replicas: 1
   containerPort: 3306
   servicePort: 3306
@@ -14,20 +14,20 @@ db:
   storageSize: 3Gi
 memcached:
   image: memcached
-  tag: latest
+  tag: "49b5e263626f092b93ffca046e7df0129da681ab"
   replicas: 1
   containerPort: 11211
   servicePort: 11211
 rabbitmq:
   image: rabbitmq
-  tag: latest
+  tag: "49b5e263626f092b93ffca046e7df0129da681ab"
   replicas: 1
   containerPort: 5672
   servicePort: 5672
   defaultUser: guest
 initcontainers:
   image: busybox
-  tag: latest
+  tag: "49b5e263626f092b93ffca046e7df0129da681ab"
 ingress:
   enabled: true
   host: emeraldflow.yourdomain.com
